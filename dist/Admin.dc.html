@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;background:#efe7db;}
+  *{box-sizing:border-box;}
+  button{font-family:inherit;}
+  textarea,input{font-family:inherit;}
+  .kmS::-webkit-scrollbar{width:9px;height:9px;}
+  .kmS::-webkit-scrollbar-thumb{background:rgba(169,133,111,0.4);border-radius:8px;}
+  textarea::placeholder,input::placeholder{color:#b3a696;}
+</style>
+<script src="products.js"></script>
+<script src="brief-defaults.js"></script>
+<script src="gallery.js"></script>
+</helmet>
+<div style="min-height:100vh;background:#f3ece0;color:#5f5044;font-family:'Noto Sans Thai',sans-serif;font-weight:400;display:flex;flex-direction:column;">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 28px;background:#fffdf9;border-bottom:1px solid rgba(169,133,111,0.28);position:sticky;top:0;z-index:10;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <img src="img/logo/km-trans.png" alt="Kangaroo Mommy" style="height:44px;width:auto;"/>
+      <div>
+        <div style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:18px;color:#3f342c;">หลังบ้าน · จัดการเนื้อหา</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:#a9856f;">Creator Brief Admin</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span style="font-size:12px;color:{{ savedColor }};display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:{{ savedColor }};"></span>{{ savedText }}</span>
+      <button onClick="{{ toggleJson }}" style="background:#fffdf9;border:1px solid rgba(169,133,111,0.4);border-radius:8px;padding:9px 14px;color:#7c6c5d;cursor:pointer;font-size:13px;">นำเข้า / ส่งออก</button>
+      <a href="Product Info.dc.html" target="_blank" style="background:var(--gold,#a9856f);color:#fffaf3;text-decoration:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:500;">เปิดหน้าเว็บ ↗</a>
+    </div>
+  </header>
+
+  <sc-if value="{{ jsonOpen }}">
+    <div style="background:#2c241b;color:#efe3cf;padding:18px 28px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
+        <div style="font-size:13px;color:#d9c9a8;">คัดลอกโค้ดนี้เก็บไว้เพื่อสำรอง หรือวางโค้ดที่สำรองไว้แล้วกด “นำเข้า” เพื่อกู้คืน</div>
+        <div style="display:flex;gap:8px;">
+          <button onClick="{{ doImport }}" style="background:#a9856f;border:none;border-radius:7px;padding:8px 14px;color:#fff;cursor:pointer;font-size:12.5px;">นำเข้า</button>
+          <button onClick="{{ doDownload }}" style="background:#4a3d31;border:1px solid #6b5a48;border-radius:7px;padding:8px 14px;color:#efe3cf;cursor:pointer;font-size:12.5px;">ดาวน์โหลดไฟล์</button>
+        </div>
+      </div>
+      <textarea value="{{ jsonText }}" onInput="{{ onJson }}" rows="7" style="width:100%;background:#1e1912;border:1px solid #4a3d31;border-radius:8px;color:#e7d8bc;font-family:ui-monospace,monospace;font-size:12px;line-height:1.5;padding:12px;outline:none;"></textarea>
+    </div>
+  </sc-if>
+
+  <div class="kmS" style="flex:1;display:grid;grid-template-columns:288px 1fr;min-height:0;">
+
+    <aside class="kmS" style="border-right:1px solid rgba(169,133,111,0.28);background:#faf5ec;overflow:auto;padding:10px 0 40px;">
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+        <div style="padding:16px 20px 6px;font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:#a9856f;">{{ g.en }}</div>
+        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+          <button onClick="{{ it.open }}" style="{{ it.style }}" style-hover="background:rgba(169,133,111,0.1);">
+            <span style="width:6px;height:6px;border-radius:50%;background:{{ it.dot }};flex:none;"></span>
+            <span style="flex:1;text-align:left;line-height:1.3;">{{ it.name }}</span>
+          </button>
+        </sc-for>
+      </sc-for>
+    </aside>
+
+    <main class="kmS" style="overflow:auto;padding:26px 32px 80px;">
+      <div style="max-width:860px;margin:0 auto;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:18px;margin-bottom:22px;border-bottom:1px solid rgba(169,133,111,0.28);">
+          <div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:#a9856f;">{{ cur.lineEn }}</div>
+            <h1 style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:24px;color:#3f342c;margin:6px 0 2px;">{{ cur.thaiName }}</h1>
+            <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:#a08972;">{{ cur.enName }}</div>
+          </div>
+          <button onClick="{{ resetProduct }}" style="background:#fffdf9;border:1px solid rgba(196,120,90,0.5);border-radius:8px;padding:9px 14px;color:#b5623f;cursor:pointer;font-size:12.5px;white-space:nowrap;">คืนค่าเริ่มต้นทั้งสินค้า</button>
+        </div>
+
+        <div style="margin-bottom:24px;padding:16px 18px 18px;background:#fffdf9;border:1px solid rgba(169,133,111,0.22);border-radius:11px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:13px;">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <span style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:15px;color:#3f342c;">รูปภาพ & ลำดับการแสดง</span>
+              <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:#a4917f;">Gallery &amp; Order</span>
+              <sc-if value="{{ galleryOverridden }}"><span style="font-size:10.5px;color:#8a6f4e;background:rgba(169,133,111,0.16);border-radius:20px;padding:2px 9px;">แก้ไขแล้ว</span></sc-if>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <label style="background:var(--gold,#a9856f);color:#fff;border-radius:8px;padding:8px 14px;font-size:12.5px;cursor:pointer;">+ เพิ่มรูป<input type="file" accept="image/*" multiple onChange="{{ onAddImages }}" style="display:none;"/></label>
+              <sc-if value="{{ galleryOverridden }}"><button onClick="{{ resetGallery }}" style="background:none;border:1px solid rgba(169,133,111,0.4);border-radius:8px;padding:8px 12px;color:#a9856f;cursor:pointer;font-size:12px;">คืนค่าเริ่มต้น</button></sc-if>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:12px;">
+            <sc-for list="{{ shots }}" as="s" hint-placeholder-count="4">
+              <div style="border:1px solid rgba(169,133,111,0.28);border-radius:9px;overflow:hidden;background:#f6efe4;">
+                <div style="aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;padding:8px;background:#fbf7f0;">{{ s.thumb }}</div>
+                <div style="display:flex;align-items:center;gap:2px;padding:6px 6px;border-top:1px solid rgba(169,133,111,0.2);">
+                  <button onClick="{{ s.onLeft }}" style="background:none;border:none;color:#a9856f;cursor:pointer;font-size:14px;padding:2px 4px;">◀</button>
+                  <span style="font-size:9.5px;color:#8a7a6b;flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ s.label }}</span>
+                  <button onClick="{{ s.onRight }}" style="background:none;border:none;color:#a9856f;cursor:pointer;font-size:14px;padding:2px 4px;">▶</button>
+                  <button onClick="{{ s.onRemove }}" style="background:none;border:none;color:#c07a52;cursor:pointer;font-size:13px;padding:2px 4px;">✕</button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:#a4917f;">ลากรูปมาวางไม่ได้ ให้กด “+ เพิ่มรูป” · ◀ ▶ จัดลำดับ · ✕ ลบรูป · รูปที่เพิ่มถูกย่อขนาดอัตโนมัติเพื่อประหยัดพื้นที่</div>
+        </div>
+
+        <sc-for list="{{ fields }}" as="f" hint-placeholder-count="10">
+          <div style="margin-bottom:20px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+              <span style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:15px;color:#3f342c;">{{ f.th }}</span>
+              <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:#a4917f;">{{ f.en }}</span>
+              <sc-if value="{{ f.overridden }}">
+                <span style="font-size:10.5px;color:#8a6f4e;background:rgba(169,133,111,0.16);border-radius:20px;padding:2px 9px;">แก้ไขแล้ว</span>
+              </sc-if>
+              <span style="flex:1;"></span>
+              <sc-if value="{{ f.overridden }}">
+                <button onClick="{{ f.reset }}" style="background:none;border:none;color:#a9856f;cursor:pointer;font-size:12px;text-decoration:underline;padding:0;">คืนค่าเริ่มต้น</button>
+              </sc-if>
+            </div>
+            <textarea value="{{ f.value }}" onInput="{{ f.onInput }}" placeholder="{{ f.ph }}" rows="{{ f.rows }}" style="width:100%;resize:vertical;background:#fffdf9;border:1px solid rgba(169,133,111,0.3);border-radius:9px;color:#463a2f;font-weight:400;font-size:14px;line-height:1.7;padding:12px 14px;outline:none;" style-focus="border-color:#a9856f;"></textarea>
+          </div>
+        </sc-for>
+
+        <div style="margin-bottom:20px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+            <span style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:15px;color:#3f342c;">ลิงก์สินค้า</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:#a4917f;">Product Link</span>
+            <sc-if value="{{ linkOverridden }}"><span style="font-size:10.5px;color:#8a6f4e;background:rgba(169,133,111,0.16);border-radius:20px;padding:2px 9px;">แก้ไขแล้ว</span></sc-if>
+          </div>
+          <input value="{{ linkVal }}" onInput="{{ onLink }}" placeholder="https://…" style="width:100%;background:#fffdf9;border:1px solid rgba(169,133,111,0.3);border-radius:9px;color:#463a2f;font-weight:400;font-size:14px;padding:12px 14px;outline:none;" style-focus="border-color:#a9856f;"/>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:880}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    const P = window.KM_PRODUCTS || [];
+    this.state = { selId: P.length ? P[0].id : null, edits: this.load(), gallery: this.loadGallery(), saved: 'idle', jsonOpen:false, jsonText:'' };
+  }
+  load(){ try { return JSON.parse(localStorage.getItem('km_product_edits')||'{}'); } catch(e){ return {}; } }
+  loadGallery(){ try { return JSON.parse(localStorage.getItem('km_product_gallery')||'{}'); } catch(e){ return {}; } }
+  persistGallery(g){ try { localStorage.setItem('km_product_gallery', JSON.stringify(g)); } catch(_){ alert('พื้นที่จัดเก็บเต็ม — ลองลดจำนวนรูปหรือขนาดรูปลง'); } }
+  ensureRec(id){ const p=(window.KM_PRODUCTS||[]).find(x=>x.id===id); return this.state.gallery[id] ? this.state.gallery[id].slice() : (window.KM_defaultRecord?window.KM_defaultRecord(p):[]); }
+  setGalleryRec(id,rec){ const g=Object.assign({},this.state.gallery); g[id]=rec; this.persistGallery(g); this.setState({gallery:g}); this.flash(); }
+  moveImg(id,idx,dir){ const rec=this.ensureRec(id); const j=idx+dir; if(j<0||j>=rec.length)return; const t=rec[idx];rec[idx]=rec[j];rec[j]=t; this.setGalleryRec(id,rec); }
+  removeImg(id,idx){ const rec=this.ensureRec(id).filter((_,i)=>i!==idx); this.setGalleryRec(id,rec); }
+  resetGallery(id){ const g=Object.assign({},this.state.gallery); delete g[id]; this.persistGallery(g); this.setState({gallery:g}); this.flash(); }
+  downscale(file){ return new Promise(res=>{ const rd=new FileReader(); rd.onload=()=>{ const img=new Image(); img.onload=()=>{ const max=1200; const sc=Math.min(1,max/Math.max(img.width,img.height)); const w=Math.round(img.width*sc),h=Math.round(img.height*sc); const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h); res(c.toDataURL('image/jpeg',0.82)); }; img.src=rd.result; }; rd.readAsDataURL(file); }); }
+  async addImages(id,fileList){ let rec=this.ensureRec(id); for(const f of [...(fileList||[])]){ if(!/^image\//.test(f.type))continue; const d=await this.downscale(f); rec=rec.concat([{t:'a',d,label:'รูปเพิ่มเติม'}]); } this.setGalleryRec(id,rec); }
+  persist(edits){ try { localStorage.setItem('km_product_edits', JSON.stringify(edits)); } catch(_){} }
+  flash(){ clearTimeout(this._ft); this.setState({saved:'saved'}); this._ft=setTimeout(()=>this.setState({saved:'idle'}),1400); }
+
+  DEFAULT_DO(){ return [
+    'เปิดคลิป 3 วินาทีแรกให้สะดุด — ตั้งปัญหาผิว/ความกังวลของคุณแม่ก่อนเข้าสินค้า',
+    'ถ่ายในที่แสงสว่างเพียงพอ โทนธรรมชาติ เห็นเนื้อครีมและสีผลิตภัณฑ์ตามจริง',
+    'โชว์ผลิตภัณฑ์และฉลากให้ชัด เห็นแบรนด์ Kangaroo Mommy',
+    'ใช้สินค้าจริง โชว์เท็กซ์เจอร์ การเกลี่ย/การซึม และผลลัพธ์ก่อน–หลัง',
+    'พูดถึงจุดขายหลักและส่วนผสมเด่นให้ถูกต้อง ตรงตามข้อมูลแบรนด์',
+    'เน้นความอ่อนโยน–ปลอดภัย เหมาะกับคุณแม่ตั้งครรภ์/ให้นม และผิวบอบบางของเด็ก',
+    'อธิบายวิธีใช้และขั้นตอนแบบเข้าใจง่าย ทำตามได้จริง',
+    'ติดตะกร้า/ใส่ลิงก์สินค้า และใส่แฮชแท็ก + แท็กแบรนด์ตามที่กำหนด',
+    'ใช้น้ำเสียงเป็นมิตร จริงใจ เหมือนเพื่อนคุณแม่แนะนำกันเอง',
+    'ส่งคลิปตามกำหนดเวลา และไม่ลบโพสต์หลังจากลงแล้ว'
+  ].join('\n'); }
+  DEFAULT_DONT(){ return [
+    'ห้ามกล่าวอ้างสรรพคุณเกินจริงหรือเชิงรักษาโรค (เช่น รักษาสิว/ฝ้าหายขาด) — ผิดกฎ อย./แพลตฟอร์ม',
+    'ห้ามการันตีผลลัพธ์ 100% หรือใช้คำเว่อร์ เช่น “ขาวใน 3 วัน / หายขาด”',
+    'ไม่ถ่ายในที่มืดหรือแสงไม่เพียงพอ',
+    'ไม่ใช้ฟิลเตอร์แต่งผิวจนดูเกินจริง',
+    'ไม่รีวิวแบบหลอก ๆ โดยไม่ได้ใช้สินค้าจริง',
+    'ไม่ให้ข้อมูลส่วนผสม/ความปลอดภัยผิด โดยเฉพาะสำหรับเด็กและคุณแม่ตั้งครรภ์',
+    'ไม่เปรียบเทียบโจมตีหรือพาดพิงแบรนด์อื่นโดยตรง',
+    'ไม่ใช้เพลง/ภาพที่มีลิขสิทธิ์โดยไม่ได้รับอนุญาต',
+    'ไม่ลืมแท็กแบรนด์และแฮชแท็กที่กำหนด และห้ามลบคลิปหลังโพสต์',
+    'ไม่ทำคอนเทนต์ที่เสี่ยงต่อความปลอดภัยของเด็ก (เช่น ทาใกล้ตา/ปากเด็กเกินจำเป็น)'
+  ].join('\n'); }
+
+  shortEn(p){ const m={'wg-cleanser':'Facial Cleanser','wg-toner':'Toner','wg-eyecream':'Eye Cream','wg-essence':'Dual-Effect Essence','wg-cream':'Hydrating Cream','wg-lotion':'Hydrating Lotion','rd-cleanser':'Cleanser','rd-toner':'Toner','rd-serum':'Serum','rd-essence-lotion':'Essence Lotion','rd-essence-cream':'Essence Cream','tf-toner':'Essence Toner','tf-serum':'Serum','tf-facecream':'Face Cream','olive-50':'Olive Oil 50 ml','olive-96':'Olive Oil 96 ml','anti-wrinkle':'Anti-Wrinkle Body Essence','raspberry':'Raspberry Body Lotion','kids-soothing':'Soothing & Hydrating Cream','kids-moisture':'Moisturizing Cream','rd-giftset':'Gift Set (5)','wg-giftset':'Gift Set (4)'}; return m[p.id] || (p.enName||'').replace(/^Kangaroo Mommy\s*/,''); }
+  lineMeta(){ return {
+    wheatgerm:{th:'วีทเจิร์ม มอยส์แคร์ พลัส',en:'Wheat Germ Moist Care Plus'},
+    radiant:{th:'ผิวกระจ่างใส',en:'Radiant & Brightening'},
+    truffle:{th:'ทรัฟเฟิล ลักชัวเรียส แคร์',en:'Truffle Luxurious Care'},
+    body:{th:'บอดี้ & สเปเชียล แคร์',en:'Body & Special Care'},
+    kids:{th:'สำหรับเด็ก',en:'Kids Care'}
+  }; }
+  fieldDefs(){ return [
+    {key:'keymsg',th:'Key Message',en:'คีย์เมสเสจ',rows:3,ph:'ประโยคจุดขายหลัก…'},
+    {key:'features',th:'จุดเด่น / คุณสมบัติ',en:'Key Features',rows:5,ph:'จุดเด่น (บรรทัดละข้อ)…'},
+    {key:'ingredients',th:'ส่วนผสมหลัก',en:'Key Ingredients',rows:4,ph:'ส่วนผสมสำคัญและประโยชน์…'},
+    {key:'suitable',th:'เหมาะกับสภาพผิว / ปัญหา',en:'Suitable For',rows:4,ph:'กลุ่มผิว/ปัญหาที่เหมาะ…'},
+    {key:'content',th:'ไอเดียคอนเทนต์ / หัวข้อคลิป',en:'Content Ideas',rows:5,ph:'หัวข้อ/มุมเล่าเรื่อง…'},
+    {key:'scenes',th:'โครงคลิป (Scene 1–4)',en:'Video Structure',rows:6,ph:'โครงคลิปที่อยากให้เล่า…'},
+    {key:'refs',th:'คลิปอ้างอิง',en:'Reference Videos',rows:4,ph:'วางลิงก์คลิปตัวอย่าง บรรทัดละ 1 ลิงก์…'},
+    {key:'hashtags',th:'Hashtag & Tag',en:'Hashtag & Tag',rows:4,ph:'#แฮชแท็ก และ @แท็กแบรนด์…'},
+    {key:'doList',th:'Do — สิ่งที่ควรทำ',en:'Do',rows:9,ph:'สิ่งที่ควรทำ…'},
+    {key:'dontList',th:"Don't — สิ่งที่ห้ามทำ",en:"Don't",rows:9,ph:'สิ่งที่ห้ามทำ…'}
+  ]; }
+  defFor(id,key){
+    const bd=(window.KM_BRIEF_DEFAULTS||{})[id]||{};
+    if(bd[key]!=null) return bd[key];
+    if(key==='doList') return this.DEFAULT_DO();
+    if(key==='dontList') return this.DEFAULT_DONT();
+    return '';
+  }
+  effective(id,key){ const e=(this.state.edits[id]||{}); return (e[key]!=null && e[key]!=='') ? e[key] : this.defFor(id,key); }
+  overridden(id,key){ const e=(this.state.edits[id]||{}); return e[key]!=null && e[key]!==''; }
+
+  set(id,key,val){
+    const edits=Object.assign({},this.state.edits); edits[id]=Object.assign({},edits[id],{[key]:val});
+    this.persist(edits); this.setState({edits}); this.flash();
+  }
+  reset(id,key){
+    const edits=Object.assign({},this.state.edits); const rec=Object.assign({},edits[id]); delete rec[key];
+    if(Object.keys(rec).length) edits[id]=rec; else delete edits[id];
+    this.persist(edits); this.setState({edits}); this.flash();
+  }
+  resetProduct(id){
+    const edits=Object.assign({},this.state.edits); delete edits[id];
+    this.persist(edits); this.setState({edits}); this.flash();
+  }
+  toggleJson(){ this.setState(s=>({jsonOpen:!s.jsonOpen, jsonText: JSON.stringify(s.edits,null,2)})); }
+  doImport(){ try{ const obj=JSON.parse(this.state.jsonText||'{}'); this.persist(obj); this.setState({edits:obj}); this.flash(); }catch(e){ alert('รูปแบบ JSON ไม่ถูกต้อง'); } }
+  doDownload(){
+    const blob=new Blob([JSON.stringify(this.state.edits,null,2)],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='kangaroo-brief-edits.json'; a.click();
+  }
+
+  renderVals(){
+    const P=window.KM_PRODUCTS||[]; const LM=this.lineMeta();
+    const order=['wheatgerm','radiant','truffle','body','kids'];
+    const selId=this.state.selId || (P[0] && P[0].id);
+    const groups=order.map(k=>({
+      en:(LM[k]||{}).en||k,
+      items:P.filter(p=>p.line===k).map(p=>{
+        const isSel=p.id===selId;
+        const anyEdit=!!this.state.edits[p.id] && Object.keys(this.state.edits[p.id]).length>0;
+        return { name:this.shortEn(p), thaiName:p.thaiName, dot:(anyEdit?'#a9856f':'rgba(169,133,111,0.28)'),
+          style:'display:flex;align-items:center;gap:10px;width:100%;padding:9px 20px;border:none;cursor:pointer;font-size:13.5px;color:'+(isSel?'#3f342c':'#7c6c5d')+';background:'+(isSel?'rgba(169,133,111,0.16)':'transparent')+';border-left:3px solid '+(isSel?'#a9856f':'transparent')+';',
+          open:()=>this.setState({selId:p.id}) };
+      })
+    })).filter(g=>g.items.length);
+
+    const cur=P.find(p=>p.id===selId)||{};
+    const fields=this.fieldDefs().map(f=>({
+      th:f.th, en:f.en, rows:f.rows, ph:f.ph||'',
+      value:this.effective(selId,f.key),
+      overridden:this.overridden(selId,f.key),
+      onInput:(ev)=>this.set(selId,f.key,ev.target.value),
+      reset:()=>this.reset(selId,f.key)
+    }));
+
+    const savedMap={idle:['#a9a08a','พร้อมแก้ไข · บันทึกอัตโนมัติ'],saved:['#7f9b62','บันทึกแล้ว ✓']};
+    const sv=savedMap[this.state.saved]||savedMap.idle;
+
+    const galRec = this.state.gallery[selId] ? this.state.gallery[selId] : (window.KM_defaultRecord?window.KM_defaultRecord(cur):[]);
+    const gdef = window.KM_defaultShots?window.KM_defaultShots(cur):[]; const gByKey={}; gdef.forEach(s=>{gByKey[s.k]=s;});
+    const shots = galRec.map((item,idx)=>{
+      const src=item.t==='b'?(gByKey[item.k]?gByKey[item.k].src:''):item.d;
+      const label=item.t==='b'?(gByKey[item.k]?gByKey[item.k].label:''):(item.label||'รูปเพิ่มเติม');
+      return {src,label,thumb: src ? React.createElement('img',{src, alt:label, style:{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}) : null,onLeft:()=>this.moveImg(selId,idx,-1),onRight:()=>this.moveImg(selId,idx,1),onRemove:()=>this.removeImg(selId,idx)};
+    }).filter(s=>s.src);
+
+    return {
+      groups,
+      shots,
+      galleryOverridden:!!this.state.gallery[selId],
+      onAddImages:(ev)=>{ this.addImages(selId, ev.target.files); ev.target.value=''; },
+      resetGallery:()=>this.resetGallery(selId),
+      cur:{ thaiName:cur.thaiName||'—', enName:(cur.enName||'').replace(/^Kangaroo Mommy\s*/,''), lineEn:(LM[cur.line]||{}).en||'' },
+      fields,
+      linkVal:this.effective(selId,'link'),
+      linkOverridden:this.overridden(selId,'link'),
+      onLink:(ev)=>this.set(selId,'link',ev.target.value),
+      resetProduct:()=>this.resetProduct(selId),
+      savedColor:sv[0], savedText:sv[1],
+      jsonOpen:this.state.jsonOpen, jsonText:this.state.jsonText,
+      toggleJson:()=>this.toggleJson(),
+      onJson:(ev)=>this.setState({jsonText:ev.target.value}),
+      doImport:()=>this.doImport(),
+      doDownload:()=>this.doDownload()
+    };
+  }
+}
+</script>
+</body>
+</html>
