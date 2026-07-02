@@ -1,0 +1,12 @@
+import { readFileSync } from 'node:fs';
+const D = 'C:/Users/user/Project/km-creator-guide/dist';
+const g = {};
+eval(readFileSync(D+'/products.js','utf8').replace('window.KM_PRODUCTS','g.KM_PRODUCTS'));
+eval(readFileSync(D+'/brief-defaults.js','utf8').replace('window.KM_BRIEF_DEFAULTS','g.BD'));
+const P = g.KM_PRODUCTS, BD = g.BD;
+console.log('products:', P.length, '| lines:', [...new Set(P.map(p=>p.line))].join(','));
+console.log('sample product:', JSON.stringify(P[0], null, 1));
+console.log('ids:', P.map(p=>p.id).join(','));
+console.log('brief-default keys for wg-cleanser:', Object.keys(BD['wg-cleanser']||{}).join(','));
+console.log('products WITH brief default:', Object.keys(BD).length);
+console.log('img keys used:', [...new Set(P.flatMap(p=>Object.keys(p.img||{})))].join(','));

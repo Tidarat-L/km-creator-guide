@@ -23,6 +23,7 @@
 <script src="products.js"></script>
 <script src="brief-defaults.js"></script>
 <script src="gallery.js"></script>
+<script src="sb-data.js"></script>
 </helmet>
 <div style="min-height:100vh;background:#f3ece0;color:#5f5044;font-family:'Noto Sans Thai',sans-serif;font-weight:400;display:flex;flex-direction:column;">
 
@@ -142,19 +143,29 @@ class Component extends DCLogic {
   constructor(props){
     super(props);
     const P = window.KM_PRODUCTS || [];
-    this.state = { selId: P.length ? P[0].id : null, edits: this.load(), gallery: this.loadGallery(), saved: 'idle', jsonOpen:false, jsonText:'' };
+    this.state = { selId: P.length ? P[0].id : null, edits: {}, gallery: {}, saved: 'idle', jsonOpen:false, jsonText:'' };
   }
-  load(){ try { return JSON.parse(localStorage.getItem('km_product_edits')||'{}'); } catch(e){ return {}; } }
-  loadGallery(){ try { return JSON.parse(localStorage.getItem('km_product_gallery')||'{}'); } catch(e){ return {}; } }
-  persistGallery(g){ try { localStorage.setItem('km_product_gallery', JSON.stringify(g)); } catch(_){ alert('พื้นที่จัดเก็บเต็ม — ลองลดจำนวนรูปหรือขนาดรูปลง'); } }
+  componentDidMount(){
+    const self = this;
+    (function loadSB(n){
+      if (window.KM_SB) { window.KM_SB.load().then(function(d){ self.setState({ edits:d.edits, gallery:d.gallery }); }); }
+      else if (n < 60) { setTimeout(function(){ loadSB(n+1); }, 60); }
+    })(0);
+    if (!(window.KM_PRODUCTS||[]).length) {
+      this._t = setInterval(function(){
+        if ((window.KM_PRODUCTS||[]).length) { clearInterval(self._t);
+          if (!self.state.selId) self.setState({ selId: window.KM_PRODUCTS[0].id }); else self.forceUpdate(); }
+      }, 60);
+    }
+  }
+  componentWillUnmount(){ if (this._t) clearInterval(this._t); }
   ensureRec(id){ const p=(window.KM_PRODUCTS||[]).find(x=>x.id===id); return this.state.gallery[id] ? this.state.gallery[id].slice() : (window.KM_defaultRecord?window.KM_defaultRecord(p):[]); }
-  setGalleryRec(id,rec){ const g=Object.assign({},this.state.gallery); g[id]=rec; this.persistGallery(g); this.setState({gallery:g}); this.flash(); }
+  setGalleryRec(id,rec){ const g=Object.assign({},this.state.gallery); g[id]=rec; if(window.KM_SB) window.KM_SB.saveGallery(id,rec); this.setState({gallery:g}); this.flash(); }
   moveImg(id,idx,dir){ const rec=this.ensureRec(id); const j=idx+dir; if(j<0||j>=rec.length)return; const t=rec[idx];rec[idx]=rec[j];rec[j]=t; this.setGalleryRec(id,rec); }
   removeImg(id,idx){ const rec=this.ensureRec(id).filter((_,i)=>i!==idx); this.setGalleryRec(id,rec); }
-  resetGallery(id){ const g=Object.assign({},this.state.gallery); delete g[id]; this.persistGallery(g); this.setState({gallery:g}); this.flash(); }
+  resetGallery(id){ const g=Object.assign({},this.state.gallery); delete g[id]; if(window.KM_SB) window.KM_SB.resetGallery(id); this.setState({gallery:g}); this.flash(); }
   downscale(file){ return new Promise(res=>{ const rd=new FileReader(); rd.onload=()=>{ const img=new Image(); img.onload=()=>{ const max=1200; const sc=Math.min(1,max/Math.max(img.width,img.height)); const w=Math.round(img.width*sc),h=Math.round(img.height*sc); const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h); res(c.toDataURL('image/jpeg',0.82)); }; img.src=rd.result; }; rd.readAsDataURL(file); }); }
   async addImages(id,fileList){ let rec=this.ensureRec(id); for(const f of [...(fileList||[])]){ if(!/^image\//.test(f.type))continue; const d=await this.downscale(f); rec=rec.concat([{t:'a',d,label:'รูปเพิ่มเติม'}]); } this.setGalleryRec(id,rec); }
-  persist(edits){ try { localStorage.setItem('km_product_edits', JSON.stringify(edits)); } catch(_){} }
   flash(){ clearTimeout(this._ft); this.setState({saved:'saved'}); this._ft=setTimeout(()=>this.setState({saved:'idle'}),1400); }
 
   DEFAULT_DO(){ return [
@@ -214,19 +225,19 @@ class Component extends DCLogic {
 
   set(id,key,val){
     const edits=Object.assign({},this.state.edits); edits[id]=Object.assign({},edits[id],{[key]:val});
-    this.persist(edits); this.setState({edits}); this.flash();
+    if(window.KM_SB) window.KM_SB.saveField(id,key,val); this.setState({edits}); this.flash();
   }
   reset(id,key){
     const edits=Object.assign({},this.state.edits); const rec=Object.assign({},edits[id]); delete rec[key];
     if(Object.keys(rec).length) edits[id]=rec; else delete edits[id];
-    this.persist(edits); this.setState({edits}); this.flash();
+    if(window.KM_SB) window.KM_SB.resetField(id,key); this.setState({edits}); this.flash();
   }
   resetProduct(id){
     const edits=Object.assign({},this.state.edits); delete edits[id];
-    this.persist(edits); this.setState({edits}); this.flash();
+    if(window.KM_SB) window.KM_SB.resetProduct(id); this.setState({edits}); this.flash();
   }
   toggleJson(){ this.setState(s=>({jsonOpen:!s.jsonOpen, jsonText: JSON.stringify(s.edits,null,2)})); }
-  doImport(){ try{ const obj=JSON.parse(this.state.jsonText||'{}'); this.persist(obj); this.setState({edits:obj}); this.flash(); }catch(e){ alert('รูปแบบ JSON ไม่ถูกต้อง'); } }
+  doImport(){ try{ const obj=JSON.parse(this.state.jsonText||'{}'); if(window.KM_SB) window.KM_SB.saveAll(obj); this.setState({edits:obj}); this.flash(); }catch(e){ alert('รูปแบบ JSON ไม่ถูกต้อง'); } }
   doDownload(){
     const blob=new Blob([JSON.stringify(this.state.edits,null,2)],{type:'application/json'});
     const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='kangaroo-brief-edits.json'; a.click();

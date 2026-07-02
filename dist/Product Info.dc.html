@@ -25,6 +25,7 @@
 <script src="products.js"></script>
 <script src="brief-defaults.js"></script>
 <script src="gallery.js"></script>
+<script src="sb-data.js"></script>
 </helmet>
 <div class="kmScroll" style="--gold:{{ accent }};min-height:100vh;background:linear-gradient(180deg,#faf5ec 0%,#f1e7d8 100%);color:#6a5a4d;font-family:'Noto Sans Thai',sans-serif;font-weight:400;line-height:1.65;">
 
@@ -200,17 +201,7 @@
 class Component extends DCLogic {
   constructor(props){
     super(props);
-    this.state = { route: this.parseHash(), activeImg: 0, edits: this.loadEdits(), gallery: this.loadGallery() };
-  }
-  loadEdits(){ try { return JSON.parse(localStorage.getItem('km_product_edits') || '{}'); } catch(e){ return {}; } }
-  loadGallery(){ try { return JSON.parse(localStorage.getItem('km_product_gallery') || '{}'); } catch(e){ return {}; } }
-  setEdit(id, field, value){
-    this.setState(s => {
-      const edits = Object.assign({}, s.edits);
-      edits[id] = Object.assign({}, edits[id], { [field]: value });
-      try { localStorage.setItem('km_product_edits', JSON.stringify(edits)); } catch(_){}
-      return { edits };
-    });
+    this.state = { route: this.parseHash(), activeImg: 0, edits: {}, gallery: {} };
   }
   parseHash(){
     const h = (location.hash || '').replace(/^#\/?/, '');
@@ -220,8 +211,11 @@ class Component extends DCLogic {
   componentDidMount(){
     this._onHash = () => { this.setState({ route:this.parseHash(), activeImg:0 }); window.scrollTo(0,0); };
     window.addEventListener('hashchange', this._onHash);
-    this._onStorage = (e) => { if(e.key==='km_product_edits'){ this.setState({ edits:this.loadEdits() }); } if(e.key==='km_product_gallery'){ this.setState({ gallery:this.loadGallery(), activeImg:0 }); } };
-    window.addEventListener('storage', this._onStorage);
+    const self = this;
+    (function loadSB(n){
+      if (window.KM_SB) { window.KM_SB.load().then(function(d){ self.setState({ edits:d.edits, gallery:d.gallery }); }); }
+      else if (n < 60) { setTimeout(function(){ loadSB(n+1); }, 60); }
+    })(0);
     if(!window.KM_PRODUCTS){
       this._t = setInterval(()=>{ if(window.KM_PRODUCTS){ clearInterval(this._t); this.forceUpdate(); } }, 60);
     }
@@ -368,7 +362,6 @@ class Component extends DCLogic {
       briefFields, linkVal,
       hasLink: !!(linkVal && linkVal.trim()),
       linkHref: linkVal,
-      onLink: (ev)=>this.setEdit(raw.id, 'link', ev.target.value),
       goPrev: ()=>this.open(prevId),
       goNext: ()=>this.open(nextId)
     });
