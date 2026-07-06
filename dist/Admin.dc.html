@@ -108,6 +108,25 @@
           <div style="margin-top:10px;font-size:11px;color:#a4917f;">ลากรูปมาวางไม่ได้ ให้กด “+ เพิ่มรูป” · ◀ ▶ จัดลำดับ · ✕ ลบรูป · รูปที่เพิ่มถูกย่อขนาดอัตโนมัติเพื่อประหยัดพื้นที่</div>
         </div>
 
+        <div style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:13px;letter-spacing:0.04em;color:#8a6f4e;margin-bottom:14px;padding-bottom:8px;border-bottom:1px dashed rgba(169,133,111,0.32);">ข้อมูลพื้นฐานสินค้า · Product Basics</div>
+        <sc-for list="{{ basicFields }}" as="f" hint-placeholder-count="7">
+          <div style="margin-bottom:20px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+              <span style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:15px;color:#3f342c;">{{ f.th }}</span>
+              <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:#a4917f;">{{ f.en }}</span>
+              <sc-if value="{{ f.overridden }}">
+                <span style="font-size:10.5px;color:#8a6f4e;background:rgba(169,133,111,0.16);border-radius:20px;padding:2px 9px;">แก้ไขแล้ว</span>
+              </sc-if>
+              <span style="flex:1;"></span>
+              <sc-if value="{{ f.overridden }}">
+                <button onClick="{{ f.reset }}" style="background:none;border:none;color:#a9856f;cursor:pointer;font-size:12px;text-decoration:underline;padding:0;">คืนค่าเริ่มต้น</button>
+              </sc-if>
+            </div>
+            <textarea value="{{ f.value }}" onInput="{{ f.onInput }}" placeholder="{{ f.ph }}" rows="{{ f.rows }}" style="width:100%;resize:vertical;background:#fffdf9;border:1px solid rgba(169,133,111,0.3);border-radius:9px;color:#463a2f;font-weight:400;font-size:14px;line-height:1.7;padding:12px 14px;outline:none;" style-focus="border-color:#a9856f;"></textarea>
+          </div>
+        </sc-for>
+
+        <div style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:13px;letter-spacing:0.04em;color:#8a6f4e;margin:26px 0 14px;padding-bottom:8px;border-bottom:1px dashed rgba(169,133,111,0.32);">บรีฟสำหรับครีเอเตอร์ · Creator Brief</div>
         <sc-for list="{{ fields }}" as="f" hint-placeholder-count="10">
           <div style="margin-bottom:20px;">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
@@ -201,6 +220,15 @@ class Component extends DCLogic {
     body:{th:'บอดี้ & สเปเชียล แคร์',en:'Body & Special Care'},
     kids:{th:'สำหรับเด็ก',en:'Kids Care'}
   }; }
+  basicFieldDefs(){ return [
+    {key:'thaiName',th:'ชื่อสินค้า (ไทย)',en:'Thai Name',rows:2,ph:'ชื่อผลิตภัณฑ์ภาษาไทย…'},
+    {key:'enName',th:'ชื่อสินค้า (อังกฤษ)',en:'English Name',rows:2,ph:'Product name in English…'},
+    {key:'claim',th:'ประเภทผลิตภัณฑ์ (Claim)',en:'Claim',rows:1,ph:'เช่น ผลิตภัณฑ์ทำความสะอาดผิวหน้า…'},
+    {key:'net',th:'ปริมาณสุทธิ',en:'Net Quantity',rows:1,ph:'เช่น 100 กรัม…'},
+    {key:'intro',th:'รายละเอียดผลิตภัณฑ์',en:'Product Details',rows:5,ph:'คำอธิบายผลิตภัณฑ์ที่จะแสดงให้ครีเอเตอร์เห็น…'},
+    {key:'howto',th:'วิธีใช้',en:'How To Use',rows:4,ph:'ขั้นตอนการใช้…'},
+    {key:'caution',th:'ข้อควรระวัง',en:'Caution',rows:4,ph:'คำเตือน / ข้อควรระวัง…'}
+  ]; }
   fieldDefs(){ return [
     {key:'keymsg',th:'Key Message',en:'คีย์เมสเสจ',rows:3,ph:'ประโยคจุดขายหลัก…'},
     {key:'features',th:'จุดเด่น / คุณสมบัติ',en:'Key Features',rows:5,ph:'จุดเด่น (บรรทัดละข้อ)…'},
@@ -213,7 +241,12 @@ class Component extends DCLogic {
     {key:'doList',th:'Do — สิ่งที่ควรทำ',en:'Do',rows:9,ph:'สิ่งที่ควรทำ…'},
     {key:'dontList',th:"Don't — สิ่งที่ห้ามทำ",en:"Don't",rows:9,ph:'สิ่งที่ห้ามทำ…'}
   ]; }
+  BASIC_KEYS(){ return ['thaiName','enName','claim','net','intro','howto','caution']; }
   defFor(id,key){
+    if(this.BASIC_KEYS().indexOf(key)!==-1){
+      const p=(window.KM_PRODUCTS||[]).find(x=>x.id===id)||{};
+      return p[key]!=null ? p[key] : '';
+    }
     const bd=(window.KM_BRIEF_DEFAULTS||{})[id]||{};
     if(bd[key]!=null) return bd[key];
     if(key==='doList') return this.DEFAULT_DO();
@@ -252,20 +285,22 @@ class Component extends DCLogic {
       items:P.filter(p=>p.line===k).map(p=>{
         const isSel=p.id===selId;
         const anyEdit=!!this.state.edits[p.id] && Object.keys(this.state.edits[p.id]).length>0;
-        return { name:this.shortEn(p), thaiName:p.thaiName, dot:(anyEdit?'#a9856f':'rgba(169,133,111,0.28)'),
+        return { name:this.shortEn(p), thaiName:this.effective(p.id,'thaiName'), dot:(anyEdit?'#a9856f':'rgba(169,133,111,0.28)'),
           style:'display:flex;align-items:center;gap:10px;width:100%;padding:9px 20px;border:none;cursor:pointer;font-size:13.5px;color:'+(isSel?'#3f342c':'#7c6c5d')+';background:'+(isSel?'rgba(169,133,111,0.16)':'transparent')+';border-left:3px solid '+(isSel?'#a9856f':'transparent')+';',
           open:()=>this.setState({selId:p.id}) };
       })
     })).filter(g=>g.items.length);
 
     const cur=P.find(p=>p.id===selId)||{};
-    const fields=this.fieldDefs().map(f=>({
+    const mkField=(f)=>({
       th:f.th, en:f.en, rows:f.rows, ph:f.ph||'',
       value:this.effective(selId,f.key),
       overridden:this.overridden(selId,f.key),
       onInput:(ev)=>this.set(selId,f.key,ev.target.value),
       reset:()=>this.reset(selId,f.key)
-    }));
+    });
+    const basicFields=this.basicFieldDefs().map(mkField);
+    const fields=this.fieldDefs().map(mkField);
 
     const savedMap={idle:['#a9a08a','พร้อมแก้ไข · บันทึกอัตโนมัติ'],saved:['#7f9b62','บันทึกแล้ว ✓']};
     const sv=savedMap[this.state.saved]||savedMap.idle;
@@ -284,7 +319,8 @@ class Component extends DCLogic {
       galleryOverridden:!!this.state.gallery[selId],
       onAddImages:(ev)=>{ this.addImages(selId, ev.target.files); ev.target.value=''; },
       resetGallery:()=>this.resetGallery(selId),
-      cur:{ thaiName:cur.thaiName||'—', enName:(cur.enName||'').replace(/^Kangaroo Mommy\s*/,''), lineEn:(LM[cur.line]||{}).en||'' },
+      cur:{ thaiName:this.effective(selId,'thaiName')||'—', enName:(this.effective(selId,'enName')||'').replace(/^Kangaroo Mommy\s*/,''), lineEn:(LM[cur.line]||{}).en||'' },
+      basicFields,
       fields,
       linkVal:this.effective(selId,'link'),
       linkOverridden:this.overridden(selId,'link'),

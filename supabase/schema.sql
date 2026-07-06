@@ -18,8 +18,27 @@ create table if not exists creator_brief (
   dont_list    text,
   link         text,
   gallery      jsonb,          -- ordered record: [{t:'b',k:'hero'},{t:'a',url:'...'}]
+  -- product-fact overrides — edit product name/claim/net/intro/howto/caution
+  -- from Admin without touching products.js. Null => fall back to the
+  -- hardcoded default in products.js.
+  thai_name    text,
+  en_name      text,
+  claim        text,
+  net          text,
+  intro        text,
+  howto        text,
+  caution      text,
   updated_at   timestamptz not null default now()
 );
+
+-- Run this if `creator_brief` already exists in production (idempotent):
+alter table creator_brief add column if not exists thai_name text;
+alter table creator_brief add column if not exists en_name  text;
+alter table creator_brief add column if not exists claim    text;
+alter table creator_brief add column if not exists net      text;
+alter table creator_brief add column if not exists intro    text;
+alter table creator_brief add column if not exists howto    text;
+alter table creator_brief add column if not exists caution  text;
 
 alter table creator_brief enable row level security;
 

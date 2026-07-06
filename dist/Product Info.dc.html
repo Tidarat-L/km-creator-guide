@@ -240,15 +240,25 @@ class Component extends DCLogic {
   fullOf(key){ const l=this.lineMeta().find(x=>x.key===key); return l?l.en:''; }
 
   decorate(p){
+    const ed = (this.state.edits && this.state.edits[p.id]) || {};
+    const eff = (key, fallback) => (ed[key] != null && ed[key] !== '') ? ed[key] : fallback;
+    const thaiName = eff('thaiName', p.thaiName);
+    const enName = eff('enName', p.enName);
+    const claim = eff('claim', p.claim);
+    const net = eff('net', p.net);
+    const intro = eff('intro', p.intro);
+    const howto = eff('howto', p.howto);
+    const caution = eff('caution', p.caution);
     const im = p.img;
     const hasImage = !!(im && im.hero);
-    const enShort = (p.enName||'').replace(/\s*\d+(\.\d+)?\s*(g|ml|กรัม|มิลลิลิตร).*$/i,'').replace(/\s*\(Set of \d+\)/i,'').trim();
+    const enShort = (enName||'').replace(/\s*\d+(\.\d+)?\s*(g|ml|กรัม|มิลลิลิตร).*$/i,'').replace(/\s*\(Set of \d+\)/i,'').trim();
     return Object.assign({}, p, {
+      thaiName, enName, claim, net, intro, howto, caution,
       hasImage, noImage: !hasImage,
       heroSrc: hasImage ? ('img/'+p.id+'/'+im.hero) : '',
       lineShort: this.shortOf(p.line),
       lineFull: this.fullOf(p.line),
-      enShort: enShort || p.enName,
+      enShort: enShort || enName,
       open: () => this.open(p.id)
     });
   }

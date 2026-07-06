@@ -13,7 +13,10 @@
   var COLS = {
     keymsg:'keymsg', features:'features', ingredients:'ingredients',
     suitable:'suitable', content:'content', scenes:'scenes', refs:'refs',
-    hashtags:'hashtags', doList:'do_list', dontList:'dont_list', link:'link'
+    hashtags:'hashtags', doList:'do_list', dontList:'dont_list', link:'link',
+    // product-fact overrides (fall back to products.js when null)
+    thaiName:'thai_name', enName:'en_name', claim:'claim', net:'net',
+    intro:'intro', howto:'howto', caution:'caution'
   };
 
   function headers(extra){
