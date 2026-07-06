@@ -368,7 +368,8 @@ window.KM_PRODUCTS = [
    "alt": "alt.png",
    "gallery": [
     "life1.jpg",
-    "life2.jpg"
+    "life2.jpg",
+    "texture.png"
    ]
   }
  },
