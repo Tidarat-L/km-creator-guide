@@ -72,11 +72,11 @@
                     </div>
                   </sc-if>
                 </div>
-                <div style="padding:15px 17px 18px;border-top:1px solid rgba(169,133,111,0.16);">
+                <div style="padding:15px 17px 18px;border-top:1px solid rgba(169,133,111,0.16);display:flex;flex-direction:column;flex:1;">
                   <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#a9856f;">{{ p.lineShort }}</div>
-                  <div style="font-family:'Noto Serif Thai',serif;font-weight:500;font-size:15.5px;color:#3f342c;margin-top:7px;line-height:1.4;">{{ p.thaiName }}</div>
-                  <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:#a08972;margin-top:4px;line-height:1.3;">{{ p.enShort }}</div>
-                  <div style="margin-top:12px;display:inline-block;font-size:11px;color:#8a7a6b;border:1px solid rgba(169,133,111,0.3);border-radius:20px;padding:3px 11px;">{{ p.net }}</div>
+                  <div style="font-family:'Noto Serif Thai',serif;font-weight:500;font-size:15.5px;color:#3f342c;margin-top:7px;line-height:1.4;min-height:2.8em;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;">{{ p.thaiName }}</div>
+                  <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:#a08972;margin-top:4px;line-height:1.3;min-height:2.6em;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;">{{ p.enShort }}</div>
+                  <div style="margin-top:12px;display:inline-block;align-self:flex-start;font-size:11px;color:#8a7a6b;border:1px solid rgba(169,133,111,0.3);border-radius:20px;padding:3px 11px;">{{ p.net }}</div>
                 </div>
               </button>
             </sc-for>
