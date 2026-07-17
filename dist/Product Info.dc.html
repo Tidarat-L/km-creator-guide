@@ -21,6 +21,36 @@
   .kmScroll::-webkit-scrollbar-track{background:#efe6d8;}
   .kmScroll::-webkit-scrollbar-thumb{background:rgba(169,133,111,0.4);border-radius:8px;}
   textarea::placeholder,input::placeholder{color:#b3a696;}
+  .kmSaveBtn{transition:background .2s,border-color .2s,transform .1s;}
+  .kmSaveBtn:active{transform:scale(0.97);}
+  /* ---- mobile ---- */
+  @media (max-width:680px){
+    .kmHeader{padding:11px 16px !important;}
+    .kmHeaderTag{display:none !important;}
+    .kmHeaderLogo{height:42px !important;}
+    .kmHeaderSub{font-size:14px !important;}
+    .kmHero{padding:40px 18px 16px !important;}
+    .kmHeroLogo{height:120px !important;margin-bottom:16px !important;}
+    .kmHeroH1{font-size:26px !important;}
+    .kmHeroSub{font-size:18px !important;}
+    .kmHeroLead{font-size:14px !important;}
+    .kmPad{padding:12px 16px 72px !important;}
+    .kmSec{margin-top:40px !important;}
+    .kmSecEn{font-size:25px !important;}
+    .kmSecCount{font-size:30px !important;}
+    .kmProdGrid{grid-template-columns:repeat(2,1fr) !important;gap:12px !important;}
+    .kmDetail{padding:16px 16px 76px !important;}
+    .kmTopGrid{gap:22px !important;grid-template-columns:1fr !important;}
+    .kmDetH1{font-size:23px !important;}
+    .kmMainImg{padding:26px !important;border-radius:14px !important;}
+    .kmBriefGrid{grid-template-columns:1fr !important;}
+    .kmFooter{padding:20px 16px !important;flex-direction:column;text-align:center;}
+    .kmNav button{font-size:13px !important;padding:12px 10px !important;}
+  }
+  @media (max-width:380px){
+    .kmProdGrid{grid-template-columns:1fr !important;}
+    .kmHeroH1{font-size:23px !important;}
+  }
 </style>
 <script src="products.js"></script>
 <script src="brief-defaults.js"></script>
@@ -29,36 +59,36 @@
 </helmet>
 <div class="kmScroll" style="--gold:{{ accent }};min-height:100vh;background:linear-gradient(180deg,#faf5ec 0%,#f1e7d8 100%);color:#6a5a4d;font-family:'Noto Sans Thai',sans-serif;font-weight:400;line-height:1.65;">
 
-  <header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 40px;background:rgba(250,245,236,0.88);backdrop-filter:blur(14px);border-bottom:1px solid rgba(169,133,111,0.22);">
+  <header class="kmHeader" style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 40px;background:rgba(250,245,236,0.88);backdrop-filter:blur(14px);border-bottom:1px solid rgba(169,133,111,0.22);">
     <button onClick="{{ goHome }}" style="display:flex;align-items:center;gap:14px;background:none;border:none;padding:0;cursor:pointer;">
-      <img src="img/logo/km-trans.png" alt="Kangaroo Mommy" style="height:52px;width:auto;display:block;"/>
+      <img class="kmHeaderLogo" src="img/logo/km-trans.png" alt="Kangaroo Mommy" style="height:52px;width:auto;display:block;"/>
       <span style="height:30px;width:1px;background:rgba(169,133,111,0.35);"></span>
-      <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;letter-spacing:0.02em;color:#a9856f;">Creator Product Guide</span>
+      <span class="kmHeaderSub" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;letter-spacing:0.02em;color:#a9856f;">Creator Product Guide</span>
     </button>
-    <div style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#a4917f;">{{ productCount }} Products</div>
+    <div class="kmHeaderTag" style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#a4917f;">{{ productCount }} Products</div>
   </header>
 
   <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
   <div style="animation:kmFade .5s ease both;">
-    <section style="text-align:center;padding:66px 24px 30px;">
-      <img src="img/logo/km-trans.png" alt="Kangaroo Mommy" style="height:190px;width:auto;margin-bottom:22px;"/>
-      <h1 style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:39px;line-height:1.25;color:#3f342c;margin:0 auto;max-width:16em;">ข้อมูลผลิตภัณฑ์สำหรับครีเอเตอร์</h1>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#a9856f;margin:12px 0 0;">Everything you need to create — in one place</p>
-      <p style="max-width:42em;margin:20px auto 0;font-size:15.5px;color:#7c6c5d;">แตะที่ผลิตภัณฑ์เพื่อดูรายละเอียด จุดเด่น วิธีใช้ ปริมาณสุทธิ ภาพประกอบ และช่องกรอกบรีฟสำหรับใช้ในคอนเทนต์</p>
+    <section class="kmHero" style="text-align:center;padding:66px 24px 30px;">
+      <img class="kmHeroLogo" src="img/logo/km-trans.png" alt="Kangaroo Mommy" style="height:190px;width:auto;margin-bottom:22px;"/>
+      <h1 class="kmHeroH1" style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:39px;line-height:1.25;color:#3f342c;margin:0 auto;max-width:16em;">ข้อมูลผลิตภัณฑ์สำหรับครีเอเตอร์</h1>
+      <p class="kmHeroSub" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#a9856f;margin:12px 0 0;">Everything you need to create — in one place</p>
+      <p class="kmHeroLead" style="max-width:42em;margin:20px auto 0;font-size:15.5px;color:#7c6c5d;">แตะที่ผลิตภัณฑ์เพื่อดูรายละเอียด จุดเด่น วิธีใช้ ปริมาณสุทธิ ภาพประกอบ และรูปพร้อมบันทึกสำหรับใช้ในคอนเทนต์</p>
     </section>
 
-    <main style="max-width:1180px;margin:0 auto;padding:20px 40px 90px;">
+    <main class="kmPad" style="max-width:1180px;margin:0 auto;padding:20px 40px 90px;">
       <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="3">
-        <section style="margin-top:58px;">
+        <section class="kmSec" style="margin-top:58px;">
           <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding-bottom:16px;margin-bottom:26px;border-bottom:1px solid rgba(169,133,111,0.28);">
             <div>
-              <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:32px;letter-spacing:0.02em;color:#3f342c;margin:0 0 4px;">{{ sec.en }}</h2>
+              <h2 class="kmSecEn" style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:32px;letter-spacing:0.02em;color:#3f342c;margin:0 0 4px;">{{ sec.en }}</h2>
               <div style="font-family:'Noto Serif Thai',serif;font-weight:500;font-size:15px;color:#a9856f;">{{ sec.th }}</div>
               <p style="margin:7px 0 0;font-size:14px;color:#8a7a6b;max-width:40em;">{{ sec.desc }}</p>
             </div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:42px;color:rgba(169,133,111,0.4);line-height:1;">{{ sec.countLabel }}</div>
+            <div class="kmSecCount" style="font-family:'Cormorant Garamond',serif;font-size:42px;color:rgba(169,133,111,0.4);line-height:1;">{{ sec.countLabel }}</div>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:20px;">
+          <div class="kmProdGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:20px;">
             <sc-for list="{{ sec.products }}" as="p" hint-placeholder-count="4">
               <button onClick="{{ p.open }}" style="text-align:left;cursor:pointer;background:#fffdf9;border:1px solid rgba(169,133,111,0.2);border-radius:9px;padding:0;overflow:hidden;color:inherit;display:flex;flex-direction:column;transition:border-color .25s,transform .25s,box-shadow .25s;box-shadow:0 2px 10px rgba(120,95,75,0.05);" style-hover="border-color:rgba(169,133,111,0.6);transform:translateY(-4px);box-shadow:0 16px 34px rgba(120,95,75,0.16);">
                 <div style="position:relative;aspect-ratio:1/1;background:radial-gradient(circle at 50% 42%, rgba(169,133,111,0.13), rgba(255,255,255,0) 68%),#f9f3ea;display:flex;align-items:center;justify-content:center;padding:22px;">
@@ -88,13 +118,13 @@
   </sc-if>
 
   <sc-if value="{{ isDetail }}">
-  <div style="animation:kmFade .45s ease both;max-width:1120px;margin:0 auto;padding:26px 40px 96px;">
+  <div class="kmDetail" style="animation:kmFade .45s ease both;max-width:1120px;margin:0 auto;padding:26px 40px 96px;">
     <button onClick="{{ goHome }}" style="display:inline-flex;align-items:center;gap:9px;background:#fffdf9;border:1px solid rgba(169,133,111,0.3);border-radius:30px;padding:9px 18px;color:#7c6c5d;cursor:pointer;font-size:13px;letter-spacing:0.02em;transition:border-color .2s,color .2s;" style-hover="border-color:var(--gold);color:#3f342c;">← กลับหน้ารวมผลิตภัณฑ์</button>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:50px;margin-top:26px;align-items:start;">
+    <div class="kmTopGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:50px;margin-top:26px;align-items:start;">
 
       <div>
-        <div style="position:relative;aspect-ratio:1/1;border-radius:12px;background:radial-gradient(circle at 50% 40%, rgba(169,133,111,0.14), rgba(255,255,255,0) 70%),#fbf6ee;border:1px solid rgba(169,133,111,0.2);display:flex;align-items:center;justify-content:center;padding:44px;overflow:hidden;">
+        <div class="kmMainImg" style="position:relative;aspect-ratio:1/1;border-radius:12px;background:radial-gradient(circle at 50% 40%, rgba(169,133,111,0.14), rgba(255,255,255,0) 70%),#fbf6ee;border:1px solid rgba(169,133,111,0.2);display:flex;align-items:center;justify-content:center;padding:44px;overflow:hidden;">
           {{ mainImage }}
           <sc-if value="{{ current.noImage }}">
             <div style="display:flex;flex-direction:column;align-items:center;gap:16px;opacity:.6;">
@@ -113,11 +143,20 @@
           </div>
           <div style="margin-top:9px;font-size:11.5px;letter-spacing:0.06em;color:#9c8b7c;">{{ activeShot.label }}</div>
         </sc-if>
+        <sc-if value="{{ hasAnyShot }}">
+        <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+          <button class="kmSaveBtn" onClick="{{ saveActive }}" style="flex:1;min-width:150px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--gold);color:#fffaf3;border:none;border-radius:9px;padding:13px 16px;font-size:13.5px;font-weight:500;cursor:pointer;">⤓ บันทึกรูปนี้</button>
+          <sc-if value="{{ hasShots }}">
+          <button class="kmSaveBtn" onClick="{{ saveAll }}" style="flex:1;min-width:150px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#fffdf9;color:#7c6c5d;border:1px solid rgba(169,133,111,0.4);border-radius:9px;padding:13px 16px;font-size:13.5px;font-weight:500;cursor:pointer;">⤓ บันทึกรูปทั้งหมด ({{ shotCount }})</button>
+          </sc-if>
+        </div>
+        <div style="margin-top:8px;font-size:11.5px;color:#9c8b7c;">แตะเพื่อบันทึกรูปลงเครื่อง แล้วนำไปทำคอนเทนต์ได้เลย</div>
+        </sc-if>
       </div>
 
       <div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:0.26em;text-transform:uppercase;color:#a9856f;">{{ current.lineFull }}</div>
-        <h1 style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:30px;line-height:1.3;color:#3f342c;margin:13px 0 0;">{{ current.thaiName }}</h1>
+        <h1 class="kmDetH1" style="font-family:'Noto Serif Thai',serif;font-weight:600;font-size:30px;line-height:1.3;color:#3f342c;margin:13px 0 0;">{{ current.thaiName }}</h1>
         <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:#a08972;margin-top:8px;line-height:1.4;">{{ current.enName }}</div>
 
         <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;">
@@ -156,7 +195,7 @@
         <span style="font-size:11px;letter-spacing:0.03em;color:#a4917f;background:#fffdf9;border:1px solid rgba(169,133,111,0.3);border-radius:20px;padding:6px 14px;white-space:nowrap;">ข้อมูลอ้างอิงสำหรับครีเอเตอร์</span>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;">
+      <div class="kmBriefGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;">
         <sc-for list="{{ briefFields }}" as="f" hint-placeholder-count="6">
           <sc-if value="{{ f.hasValue }}">
           <div style="{{ f.spanStyle }}background:#fffdf9;border:1px solid rgba(169,133,111,0.22);border-radius:11px;padding:16px 18px 17px;box-shadow:0 2px 10px rgba(120,95,75,0.04);">
@@ -183,14 +222,14 @@
       </sc-if>
     </section>
 
-    <div style="display:flex;justify-content:space-between;gap:14px;margin-top:32px;padding-top:22px;border-top:1px solid rgba(169,133,111,0.22);">
+    <div class="kmNav" style="display:flex;justify-content:space-between;gap:14px;margin-top:32px;padding-top:22px;border-top:1px solid rgba(169,133,111,0.22);">
       <button onClick="{{ goPrev }}" style="flex:1;background:#fffdf9;border:1px solid rgba(169,133,111,0.3);border-radius:9px;padding:13px;color:#7c6c5d;cursor:pointer;font-size:13px;transition:border-color .2s,color .2s;" style-hover="border-color:var(--gold);color:#3f342c;">← ก่อนหน้า</button>
       <button onClick="{{ goNext }}" style="flex:1;background:#fffdf9;border:1px solid rgba(169,133,111,0.3);border-radius:9px;padding:13px;color:#7c6c5d;cursor:pointer;font-size:13px;transition:border-color .2s,color .2s;" style-hover="border-color:var(--gold);color:#3f342c;">ถัดไป →</button>
     </div>
   </div>
   </sc-if>
 
-  <footer style="border-top:1px solid rgba(169,133,111,0.22);padding:26px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+  <footer class="kmFooter" style="border-top:1px solid rgba(169,133,111,0.22);padding:26px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
     <img src="img/logo/km-trans.png" alt="Kangaroo Mommy" style="height:40px;width:auto;opacity:.8;"/>
     <span style="font-size:11.5px;color:#a4917f;letter-spacing:0.05em;">เอกสารข้อมูลผลิตภัณฑ์สำหรับครีเอเตอร์ · ใช้เพื่ออ้างอิงในการผลิตคอนเทนต์เท่านั้น</span>
   </footer>
@@ -226,6 +265,28 @@ class Component extends DCLogic {
   }
   open(id){ location.hash = '#/product/' + id; }
   goHome(){ location.hash = ''; }
+
+  extOf(src){
+    if(/^data:image\/([a-z0-9.+-]+)/i.test(src)) return '.'+RegExp.$1.toLowerCase().replace('jpeg','jpg').replace('svg+xml','svg');
+    const m=(src||'').split('?')[0].match(/\.(png|jpe?g|webp|gif|svg)$/i);
+    return m ? ('.'+m[1].toLowerCase()) : '.png';
+  }
+  dl(src, name){
+    try{
+      const a=document.createElement('a');
+      a.href=src; a.download=name; a.rel='noopener';
+      document.body.appendChild(a); a.click(); a.remove();
+    }catch(e){ try{ window.open(src,'_blank'); }catch(_){} }
+  }
+  saveShots(shots, one){
+    if(!shots || !shots.length) return;
+    const id=(this.state.route && this.state.route.id) || 'kangaroo-mommy';
+    const list = (one!=null) ? [shots[one]] : shots;
+    list.forEach((s,i)=>{
+      const n = (one!=null) ? (one+1) : (i+1);
+      setTimeout(()=> this.dl(s.src, id+'-'+n+this.extOf(s.src)), i*350);
+    });
+  }
 
   lineMeta(){
     return [
@@ -341,7 +402,6 @@ class Component extends DCLogic {
       { key:'scenes',     th:'โครงคลิป (เปิด 3 วิ / Scene 1–4)', en:'Video Structure', ph:'สรุปโครงคลิปที่อยากให้เล่า…',            rows:5, full:true },
       { key:'refs',       th:'คลิปอ้างอิง',              en:'Reference Videos',  ph:'วางลิงก์คลิปตัวอย่าง (บรรทัดละ 1 ลิงก์)…',      rows:4, full:true },
       { key:'hashtags',   th:'Hashtag & Tag',           en:'แฮชแท็ก & แท็ก',    ph:'#แฮชแท็กที่จำเป็น และ @แท็กแบรนด์…',           rows:4, full:true },
-      { key:'doList',     th:'Do — สิ่งที่ควรทำ',        en:'Do',                ph:'ข้อกำหนดที่ครีเอเตอร์ต้องทำ (บรรทัดละข้อ)…',    rows:11, tone:'do',   def:DEFAULT_DO },
       { key:'dontList',   th:"Don't — สิ่งที่ห้ามทำ",    en:"Don't",             ph:'สิ่งที่ห้ามทำ (บรรทัดละข้อ)…',                rows:11, tone:'dont', def:DEFAULT_DONT }
     ];
     const bd = (window.KM_BRIEF_DEFAULTS || {})[raw.id] || {};
@@ -368,6 +428,10 @@ class Component extends DCLogic {
         style: { maxWidth:'100%', maxHeight:'100%', objectFit:'contain', filter:'drop-shadow(0 18px 32px rgba(90,70,55,0.18))' }
       }) : null,
       hasShots: shots.length>1,
+      hasAnyShot: shots.length>0,
+      shotCount: shots.length,
+      saveActive: ()=> this.saveShots(shotList, idx),
+      saveAll: ()=> this.saveShots(shotList),
       showCaution: current.caution && (this.props.showCautions ?? true),
       briefFields, linkVal,
       hasLink: !!(linkVal && linkVal.trim()),
